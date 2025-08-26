@@ -1,12 +1,16 @@
 FROM node:20-slim
 
-# Install basic tools
+# Install basic tools including sudo
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     vim \
     procps \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
+
+# Configure sudo for the node user (passwordless sudo)
+RUN echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Ensure node user has access to npm global directory
 RUN mkdir -p /usr/local/share/npm-global && \
