@@ -40,6 +40,12 @@ source ~/.bashrc
 cd /any/project && codecage  # Starts Claude directly
 ```
 
+## Update
+
+```bash
+codecage-update  # Pull latest changes and rebuild image
+```
+
 <details>
 <summary>Alternative Profile</summary>
 
