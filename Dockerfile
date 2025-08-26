@@ -1,16 +1,31 @@
 FROM node:20-slim
 
-# Install basic tools including sudo
+# Install basic tools including sudo and Rails dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     vim \
     procps \
     sudo \
+    build-essential \
+    libsqlite3-dev \
+    postgresql-client \
+    libpq-dev \
+    redis-tools \
+    imagemagick \
+    libvips-tools \
+    libxml2-dev \
+    libxslt-dev \
+    libyaml-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure sudo for the node user (passwordless sudo)
 RUN echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Install mise (runtime version manager)
+RUN curl https://mise.run | sh && \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> /etc/profile.d/mise.sh && \
+    echo 'eval "$($HOME/.local/bin/mise activate bash)"' >> /etc/profile.d/mise.sh
 
 # Ensure node user has access to npm global directory
 RUN mkdir -p /usr/local/share/npm-global && \
@@ -35,9 +50,10 @@ RUN mkdir -p /home/node/.npm
 
 WORKDIR /workspace
 
-# Set up bash prompt
+# Set up bash prompt and mise
 RUN echo 'PS1="🔒 codecage:\\w\\$ "' >> ~/.bashrc && \
-    echo 'export PATH=$PATH:/usr/local/share/npm-global/bin' >> ~/.bashrc
+    echo 'export PATH=$HOME/.local/bin:$PATH:/usr/local/share/npm-global/bin' >> ~/.bashrc && \
+    echo 'eval "$($HOME/.local/bin/mise activate bash)"' >> ~/.bashrc
 
 # Switch to root to copy entrypoint, then back to node
 USER root
