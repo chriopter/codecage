@@ -48,8 +48,6 @@ RUN mkdir -p /home/node/.npm
 # Claude Code will be installed on first run in the persistent home directory
 # This ensures it works properly and can be updated easily
 
-WORKDIR /workspace
-
 # Set up bash prompt and mise
 RUN echo 'PS1="🔒 codecage:\\w\\$ "' >> ~/.bashrc && \
     echo 'export PATH=$HOME/.local/bin:$PATH:/usr/local/share/npm-global/bin' >> ~/.bashrc && \

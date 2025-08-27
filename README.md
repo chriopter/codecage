@@ -21,7 +21,8 @@ docker volume create codecage-cc-home  # For alternative profile
 # Add aliases
 cat >> ~/.bashrc << 'EOF'
 alias codecage='docker run -it --rm \
-  -v $(pwd):/workspace \
+  -v $(pwd):/$(basename $(pwd)) \
+  -w /$(basename $(pwd)) \
   -v codecage-home:/home/node \
   --network host \
   --hostname codecage-$(basename $(pwd)) \
@@ -52,7 +53,8 @@ codecage-update  # Pull latest changes and rebuild image
 ```bash
 # Add to ~/.bashrc for different config/API key
 alias codecagecc='docker run -it --rm \
-  -v $(pwd):/workspace \
+  -v $(pwd):/$(basename $(pwd)) \
+  -w /$(basename $(pwd)) \
   -v codecage-cc-home:/home/node \
   --network host \
   --hostname codecage-$(basename $(pwd)) \
